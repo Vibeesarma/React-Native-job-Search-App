@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import {
   View,
   Text,
@@ -10,7 +10,7 @@ import {
 import { useRouter } from "expo-router";
 
 import styles from "./popularjobs.style";
-import { COLORS, SIZES, FONT, images, icons } from "../../../constants";
+import { COLORS, SIZES } from "../../../constants";
 import PopularJobCard from "../../common/cards/popular/PopularJobCard";
 import useFetch from "../../../hook/useFetch";
 
@@ -19,13 +19,8 @@ const Popularjobs = () => {
     query: "React developer",
     num_pages: 1,
   });
-  console.log("🚀 ~ file: Popularjobs.jsx:22 ~ Popularjobs ~ error:", error);
-  console.log(
-    "🚀 ~ file: Popularjobs.jsx:22 ~ Popularjobs ~ isLoading:",
-    isLoading
-  );
 
-  console.log(data);
+  const [selectedJob, setSelectedJob] = useState();
 
   return (
     <View style={styles.container}>
@@ -43,7 +38,9 @@ const Popularjobs = () => {
         ) : (
           <FlatList
             data={data}
-            renderItem={({ item }) => <PopularJobCard item={item} />}
+            renderItem={({ item }) => (
+              <PopularJobCard item={item} selectedJob={selectedJob} />
+            )}
             keyExtractor={(item) => item?.job_id}
             contentContainerStyle={{ columnGap: SIZES.medium }}
             horizontal
