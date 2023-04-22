@@ -35,6 +35,34 @@ const JobDetails = () => {
 
   const onRefresh = () => {};
 
+  const displayTabContent = () => {
+    switch (activeTab) {
+      case "Qualifications":
+        return (
+          <Specifics
+            title="Qualifications"
+            points={data[0].job_highlights?.Qualifications ?? ["N/A"]}
+          />
+        );
+        break;
+      case "About":
+        return (
+          <JobAbout info={data[0].job_description ?? "No Data provided"} />
+        );
+        break;
+      case "Responsibilities":
+        return (
+          <Specifics
+            title="Responsibilities"
+            points={data[0].job_highlights?.Responsibilities ?? ["N/A"]}
+          />
+        );
+        break;
+      default:
+        break;
+    }
+  };
+
   const { data, error, isLoading, refetch } = useFetch("job-details", {
     job_id: params.id,
   });
@@ -91,9 +119,15 @@ const JobDetails = () => {
                 activeTab={activeTab}
                 setActiveTab={setActiveTab}
               />
+              {displayTabContent()}
             </View>
           )}
         </ScrollView>
+        <JobFooter
+          url={
+            data[0].jov_google_link ?? "https://careers.google.com/jobs/results"
+          }
+        />
       </>
     </SafeAreaView>
   );
